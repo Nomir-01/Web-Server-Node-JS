@@ -23,7 +23,6 @@ const users = [
       apartmentName: "Al-Haram Corner",
     },
     phoneNumber: "0334-9256885",
-    cartid: [1, 2],
   },
   {
     id: 2,
@@ -40,7 +39,6 @@ const users = [
       apartmentName: "Reno Centre",
     },
     phoneNumber: "0300-1234567",
-    cartid: [3],
   },
   {
     id: 3,
@@ -57,7 +55,6 @@ const users = [
       apartmentName: "Kali Centre",
     },
     phoneNumber: "0301-1234567",
-    cartid: [4],
   },
   {
     id: 4,
@@ -74,7 +71,6 @@ const users = [
       apartmentName: "Qureshi Residency",
     },
     phoneNumber: "0302-1234567",
-    cartid: [0],
   },
 ];
 
@@ -83,30 +79,16 @@ app.post(userPath, (req, res) => {
   const body = req.body;
   const keys = Object.keys(body);
   if (body?.name) {
-    let user = {};
-    if (keys.includes("cartid")) {
-      user = {
-        id: users.at(-1).id + 1,
-        name: body.name,
-        email: body.email,
-        username: body.username,
-        name: body.name,
-        address: body.address,
-        phoneNumber: body.phoneNumber,
-        cartid: body.cartid,
-      };
-    } else {
-      user = {
-        id: users.at(-1).id + 1,
-        name: body.name,
-        email: body.email,
-        username: body.username,
-        name: body.name,
-        address: body.address,
-        phoneNumber: body.phoneNumber,
-        cartid: 0,
-      };
-    }
+    let user = {
+      id: users.at(-1).id + 1,
+      name: body.name,
+      email: body.email,
+      username: body.username,
+      name: body.name,
+      address: body.address,
+      phoneNumber: body.phoneNumber,
+    };
+
     users.push(user);
     res.status(201).json(user);
   }
@@ -176,7 +158,14 @@ app.delete(`${userPath}/:id`, (req, res, next) => {
     if (user === -1) {
       res.status(404).send("User not found");
     } else {
-      const cartsToDel = users[user].cartid;
+      const userCartDelete = users[user].id;
+      console.log(userCartDelete);
+      const cartsToDel = [];
+      carts.forEach((cart) => {
+        if (cart.userId == userCartDelete) {
+          cartsToDel.push(cart.id);
+        }
+      });
       for (let a = 0; a < cartsToDel.length; a++) {
         const cart = carts.findIndex((c) => {
           return c.id === Number(cartsToDel[a]);
@@ -582,7 +571,7 @@ app.patch(`${cartPath}/:id`, (req, res, next) => {
     }
   }
 
-  res.status(400).send("Please send a correct User ID");
+  res.status(400).send("Please send a correct Cart ID");
 });
 
 //Delete Cart(s)
