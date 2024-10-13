@@ -6,6 +6,7 @@ PORT = 5003;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/users", routes.users);
+app.use("/products", routes.products);
 
 app.listen(PORT, () => {
   console.log("Server Is Running");
