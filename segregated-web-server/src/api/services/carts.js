@@ -1,10 +1,12 @@
 const databaseCart = require("../Database/carts");
 const databaseProduct = require("../Database/products");
+const timer = require("../time-functions/timer");
 const carts = databaseCart.carts;
 const products = databaseProduct.products;
 
-const getAllCarts = (query) => {
+const getAllCarts = async (query) => {
   if (!Object.keys(query).length) {
+    await timer.waitFunc(2000);
     return carts.map((cart) => ({
       ...cart,
       products: cart.products.map((cartProduct) => {
@@ -19,7 +21,7 @@ const getAllCarts = (query) => {
   throw { status: 404, message: "No cart found" };
 };
 
-const getSingleCart = (query) => {
+const getSingleCart = async (query) => {
   if (query?.id) {
     const cart = carts.find((c) => {
       return c.id === Number(query.id);
@@ -32,6 +34,7 @@ const getSingleCart = (query) => {
         const { id, quantity, inStock, ...productDetails } = productDetail;
         return { ...cartProduct, ...productDetails };
       });
+      await timer.waitFunc(2000);
       return {
         ...cart,
         products: details,
@@ -43,7 +46,7 @@ const getSingleCart = (query) => {
   throw { status: 400, message: "Please enter a correct Cart ID" };
 };
 
-const getSingleUserCart = (query) => {
+const getSingleUserCart = async (query) => {
   if (query?.id2) {
     const cartToShow = [];
     for (const a of carts) {
@@ -52,6 +55,7 @@ const getSingleUserCart = (query) => {
       }
     }
     if (cartToShow.length >= 1) {
+      await timer.waitFunc(2000);
       return cartToShow.map((cart) => ({
         ...cart,
         products: cart.products.map((cartProduct) => {

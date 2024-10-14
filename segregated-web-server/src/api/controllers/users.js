@@ -1,30 +1,24 @@
 const service = require("../services/users");
 
-const getAllUsers = (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
     const query = req.params;
-    const users = service.getAllUsers(query);
+    const users = await service.getAllUsers(query);
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ err });
   }
 };
 
-const getSingleUser = (req, res) => {
+const getSingleUser = async (req, res) => {
   try {
     const query = req.params;
-    console.log(query.id);
-    if (query?.id) {
-      const user = service.getSingleUser(query);
-      if (user) {
-        res.status(200).json(user);
-      } else {
-        res.status(404).send("User not found");
-      }
+    const users = await service.getSingleUser(query);
+    if (users) {
+      res.status(200).json(users);
     }
-    res.status(400).send("Please send a correct User ID");
   } catch (err) {
-    res.status(500).json({ err });
+    res.status(err.status || 500).json({ error: err.message });
   }
 };
 

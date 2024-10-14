@@ -1,29 +1,29 @@
 const service = require("../services/products");
 
-const getAllProducts = (req, res) => {
+const getAllProducts = async (req, res) => {
   try {
     const query = req.params;
-    const products = service.getAllProducts(query);
+    const products = await service.getAllProducts(query);
     res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ err });
   }
 };
 
-const getSingleProduct_Categories = (req, res) => {
+const getSingleProduct_Categories = async (req, res) => {
   try {
     const query = req.params;
-    const products = service.getSingleProduct_Categories(query);
+    const products = await service.getSingleProduct_Categories(query);
     if (products) res.status(200).json(products);
   } catch (err) {
     res.status(err.status || 500).json({ error: err.message });
   }
 };
 
-const getCategoryProduct = (req, res) => {
+const getCategoryProduct = async (req, res) => {
   try {
     const query = req.params;
-    const products = service.getCategoryProduct(query);
+    const products = await service.getCategoryProduct(query);
     if (products) res.status(200).json(products);
   } catch (err) {
     res.status(err.status || 500).json({ error: err.message });

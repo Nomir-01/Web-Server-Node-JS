@@ -1,17 +1,30 @@
 const databaseUser = require("../Database/users");
 const databaseCart = require("../Database/carts");
+const timer = require("../time-functions/timer");
 const users = databaseUser.users;
 const carts = databaseCart.carts;
 
-const getAllUsers = (query) => {
-  if (!Object.keys(query).length) return users;
+const getAllUsers = async (query) => {
+  if (!Object.keys(query).length) {
+    await timer.waitFunc(2000);
+    return users;
+  }
 };
 
-const getSingleUser = (query) => {
-  const user = users.find((u) => {
-    return u.id === Number(query.id);
-  });
-  return user;
+const getSingleUser = async (query) => {
+  if (query?.id) {
+    const user = users.find((u) => {
+      return u.id === Number(query.id);
+    });
+
+    if (user) {
+      await timer.waitFunc(2000);
+      return user;
+    } else {
+      throw { status: 404, message: "User not found" };
+    }
+  }
+  throw { status: 400, message: "Please enter a correct User ID" };
 };
 
 const addUser = (body) => {
@@ -69,7 +82,6 @@ const deleteUser = (query) => {
       throw { status: 404, message: "User not found" };
     } else {
       const userCartDelete = users[user].id;
-      console.log(userCartDelete);
       const cartsToDel = [];
       carts.forEach((cart) => {
         if (cart.userId == userCartDelete) {

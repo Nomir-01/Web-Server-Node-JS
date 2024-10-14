@@ -1,29 +1,29 @@
 const service = require("../services/carts");
 
-const getAllCarts = (req, res) => {
+const getAllCarts = async (req, res) => {
   try {
     const query = req.params;
-    const cart = service.getAllCarts(query);
+    const cart = await service.getAllCarts(query);
     if (cart) res.status(200).json(cart);
   } catch (err) {
     res.status(err.status || 500).json({ error: err.message });
   }
 };
 
-const getSingleCart = (req, res) => {
+const getSingleCart = async (req, res) => {
   try {
     const query = req.params;
-    const cart = service.getSingleCart(query);
+    const cart = await service.getSingleCart(query);
     if (cart) res.status(200).json(cart);
   } catch (err) {
     res.status(err.status || 500).json({ error: err.message });
   }
 };
 
-const getSingleUserCart = (req, res) => {
+const getSingleUserCart = async (req, res) => {
   try {
     const query = req.params;
-    const cart = service.getSingleUserCart(query);
+    const cart = await service.getSingleUserCart(query);
     if (cart) res.status(200).json(cart);
   } catch (err) {
     res.status(err.status || 500).json({ error: err.message });

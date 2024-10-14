@@ -1,15 +1,20 @@
 const databaseProduct = require("../Database/products");
+const timer = require("../time-functions/timer");
 const products = databaseProduct.products;
 
-const getAllProducts = (query) => {
-  if (!Object.keys(query).length) return products;
+const getAllProducts = async (query) => {
+  if (!Object.keys(query).length) {
+    await timer.waitFunc(2000);
+    return products;
+  }
 };
 
-const getSingleProduct_Categories = (query) => {
+const getSingleProduct_Categories = async (query) => {
   console.log(query);
   if (query?.id === "categories") {
     const categories = products.map((product) => product.category);
     const uniqueCategories = [...new Set(categories)];
+    await timer.waitFunc(2000);
     return uniqueCategories;
   } else if (query.id >= 0) {
     if (query?.id) {
@@ -18,6 +23,7 @@ const getSingleProduct_Categories = (query) => {
       });
 
       if (product) {
+        await timer.waitFunc(2000);
         return product;
       } else {
         throw { status: 404, message: "Product not found" };
@@ -27,7 +33,7 @@ const getSingleProduct_Categories = (query) => {
   throw { status: 400, message: "Please enter a correct URL" };
 };
 
-const getCategoryProduct = (query) => {
+const getCategoryProduct = async (query) => {
   if (query?.id2) {
     const categories = products.map((product) => product.category);
     const categoriesToShow = [];
@@ -38,6 +44,7 @@ const getCategoryProduct = (query) => {
       }
     }
     if (categoriesToShow.length > 0) {
+      await timer.waitFunc(2000);
       return categoriesToShow;
     } else {
       throw { status: 404, message: "Please select correct Product" };
