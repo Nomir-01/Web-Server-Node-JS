@@ -27,8 +27,9 @@ const getSinglePost = async (req, res) => {
 
 const addPost = async (req, res) => {
   try {
+    const userId = req.userId;
     const body = req.body;
-    const post = await service.addPost(body);
+    const post = await service.addPost(body, userId);
     if (post) {
       res.status(200).json(post);
     }

@@ -50,14 +50,14 @@ const getSinglePost = async (query) => {
   throw { status: 400, message: "Please enter a correct Post ID" };
 };
 
-const addPost = async (body) => {
+const addPost = async (body, userId) => {
   const bodyKeys = Object.keys(body);
-  const requiredKeys = ["userId", "title", "description"];
+  const requiredKeys = ["title", "description"];
   console.log(bodyKeys);
   if (JSON.stringify(requiredKeys) == JSON.stringify(bodyKeys)) {
     const post = await prisma.post.create({
       data: {
-        userId: body.userId,
+        userId: Number(userId),
         title: body.title,
         description: body.description,
       },

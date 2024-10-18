@@ -20,11 +20,11 @@ const getUsers = async (query) => {
   }
 };
 
-const getSingleUser = async (query) => {
-  if (query?.id) {
+const getSingleUser = async (userId) => {
+  if (userId) {
     const user = await prisma.user.findUnique({
       where: {
-        id: Number(query.id),
+        id: Number(userId),
       },
       select: {
         firstName: true,
@@ -71,13 +71,12 @@ const addUser = async (body) => {
   throw { status: 400, message: "Please add all required fields" };
 };
 
-const updateUser = async (body, query) => {
+const updateUser = async (body, userId) => {
   const keys = Object.keys(body);
-  if (query?.id) {
-    const userId = Number(query.id);
+  if (userId) {
     const user = await prisma.user.findUnique({
       where: {
-        id: userId,
+        id: Number(userId),
       },
       select: {
         firstName: true,
@@ -102,7 +101,7 @@ const updateUser = async (body, query) => {
       }
       const updatedUser = await prisma.user.update({
         where: {
-          id: userId,
+          id: Number(userId),
         },
         data: updateData,
         select: {
@@ -117,12 +116,11 @@ const updateUser = async (body, query) => {
   throw { status: 400, message: "Please send a correct User ID" };
 };
 
-const deleteUser = async (query) => {
-  if (query?.id) {
-    const userId = Number(query.id);
+const deleteUser = async (userId) => {
+  if (userId) {
     const user = await prisma.user.delete({
       where: {
-        id: userId,
+        id: Number(userId),
       },
     });
 

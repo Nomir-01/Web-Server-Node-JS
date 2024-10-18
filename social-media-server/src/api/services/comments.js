@@ -74,14 +74,14 @@ const getSingleComment = async (query) => {
   throw { status: 400, message: "Please enter a correct Comment ID" };
 };
 
-const addComment = async (body) => {
+const addComment = async (body, userId) => {
   const bodyKeys = Object.keys(body);
-  const requiredKeys = ["userId", "postId", "comment"];
+  const requiredKeys = ["postId", "comment"];
   console.log(bodyKeys);
   if (JSON.stringify(requiredKeys) == JSON.stringify(bodyKeys)) {
     const comment = await prisma.comment.create({
       data: {
-        userId: body.userId,
+        userId: Number(userId),
         postId: body.postId,
         comment: body.comment,
       },

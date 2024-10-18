@@ -28,8 +28,9 @@ const getSingleComment = async (req, res) => {
 
 const addComment = async (req, res) => {
   try {
+    const userId = req.userId;
     const body = req.body;
-    const comment = await service.addComment(body);
+    const comment = await service.addComment(body, userId);
     if (comment) {
       res.status(200).json(comment);
     }

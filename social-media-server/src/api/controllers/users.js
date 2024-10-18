@@ -15,8 +15,8 @@ const getUsers = async (req, res) => {
 
 const getSingleUser = async (req, res) => {
   try {
-    const query = req.params;
-    const users = await service.getSingleUser(query);
+    const userId = req.userId;
+    const users = await service.getSingleUser(userId);
     if (users) {
       res.status(200).json(users);
     }
@@ -40,8 +40,8 @@ const addUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const body = req.body;
-    const query = req.params;
-    const user = await service.updateUser(body, query);
+    const userId = req.userId;
+    const user = await service.updateUser(body, userId);
     if (user) {
       res.status(200).json(user);
     }
@@ -53,7 +53,8 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const query = req.params;
-    const user = await service.deleteUser(query);
+    const userId = req.userId;
+    const user = await service.deleteUser(userId);
     if (user) {
       res.status(200).send(user);
     }
