@@ -1,4 +1,4 @@
-export default function Header() {
+export default function Header({ counter }) {
   return (
     <header className="bg-blue-600 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -19,7 +19,7 @@ export default function Header() {
             />
           </svg>
           <span className="-top-1 -right-1 bg-red-500 text-xs font-bold px-2 py-1 rounded-full">
-            0
+            {counter}
           </span>
         </div>
       </div>

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function Body() {
+export default function Body({ onAddToCart }) {
   const products = [
     {
       id: 1,
@@ -110,14 +110,35 @@ export default function Body() {
     <main className="flex-grow container mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            onAddToCart={onAddToCart}
+          />
         ))}
       </div>
     </main>
   );
 }
 
-function ProductCard({ product }) {
+function ProductCard({ product, onAddToCart }) {
+  const [button, setButton] = useState({
+    buttonColor: "bg-gray-300",
+    buttonText: "text-gray-500",
+  });
+  const handleMouseEnter = () => {
+    setButton({
+      buttonColor: "bg-blue-600",
+      buttonText: "text-white",
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setButton({
+      buttonColor: "bg-gray-300",
+      buttonText: "text-gray-500",
+    });
+  };
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
       <img
@@ -139,6 +160,19 @@ function ProductCard({ product }) {
       >
         {product.inStock ? "In Stock" : "Out of Stock"}
       </p>
+      <button
+        className={`w-full py-2 px-4 rounded ${
+          product.inStock
+            ? `${button.buttonColor} ${button.buttonText}`
+            : `${button.buttonColor} text-gray-500 cursor-not-allowed`
+        } transition-colors duration-200`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={onAddToCart}
+        disabled={!product.inStock}
+      >
+        Add to Cart
+      </button>
     </div>
   );
 }
